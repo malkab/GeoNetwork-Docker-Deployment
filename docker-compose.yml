@@ -1,0 +1,38 @@
+version: '3'
+
+networks:
+  network:
+    external:
+      name: geonetwork_clima
+
+services:
+  postgres:
+    image: geographica/postgis:eclectic_equidna
+    container_name: postgres_geonetwork_clima
+
+    ports:
+      - "9310:5432"
+
+    environment:
+      - POSTGRES_PASSWD=GNpieZA323
+
+    networks:
+      - network
+
+
+  geonetwork:
+    image: geonetwork:3.2-postgres
+    container_name: geonetwork_geonetwork_clima
+
+    ports:
+      - "9300:8080"
+
+    environment:
+      - POSTGRES_DB_USERNAME=postgres
+      - POSTGRES_DB_PASSWORD=GNpieZA323
+
+    links:
+      - postgres
+
+    networks:
+      - network
